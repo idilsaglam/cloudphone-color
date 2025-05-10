@@ -217,19 +217,10 @@
       function generateCombos(hex) {
         const [h, s, l] = hexToHSL(hex);
         const combos = {
-          "✨ Bold Contrast — Stand out with this pop": [(h + 180) % 360],
-          "💅 Soft Blend — Smooth & stylish coordination": [
-            (h + 30) % 360,
-            (h + 330) % 360,
-          ],
-          "🎯 Balanced Vibe — Equal energy, stylish trio": [
-            (h + 120) % 360,
-            (h + 240) % 360,
-          ],
-          "🌈 Color Boost — Add a twist without clashing": [
-            (h + 150) % 360,
-            (h + 210) % 360,
-          ],
+          "Bold Contrast": [(h + 180) % 360],
+          "Soft Blend": [(h + 30) % 360, (h + 330) % 360],
+          "Balanced Vibe": [(h + 120) % 360, (h + 240) % 360],
+          "Color Boost": [(h + 150) % 360, (h + 210) % 360],
         };
 
         let html = "";
