@@ -13,52 +13,66 @@
         max-width: 320px;
         margin: auto;
       }
+
       h1 {
         font-size: 1.2em;
         margin-bottom: 1em;
         text-align: center;
       }
+
       .color-option {
         display: flex;
         align-items: center;
+        justify-content: center;
         padding: 0.5em;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-bottom: 0.5em;
-        cursor: pointer;
+        margin-bottom: 1em;
       }
+
       .swatch {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border-radius: 4px;
-        margin-right: 10px;
+        margin-right: 8px;
         border: 1px solid #ccc;
       }
+
+      #colorName {
+        font-weight: bold;
+        font-size: 1em;
+      }
+
       .nav-buttons {
         display: flex;
         justify-content: space-between;
         margin: 1em 0;
       }
+
       button {
         font-size: 0.9em;
         padding: 0.4em 1em;
       }
+
       .combo-title {
         margin-top: 1em;
         font-weight: bold;
       }
+
       .combo-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
         gap: 0.5em;
         margin-top: 0.5em;
       }
+
       .combo {
         width: 100%;
         padding-bottom: 100%;
         position: relative;
         border-radius: 6px;
       }
+
       .label {
         position: absolute;
         bottom: 4px;
@@ -72,11 +86,19 @@
   </head>
   <body>
     <h1>Pick a Base Color</h1>
-    <div id="colorList"></div>
+
+    <div id="singleColor">
+      <div class="color-option">
+        <div id="swatch" class="swatch"></div>
+        <span id="colorName">Loading...</span>
+      </div>
+    </div>
+
     <div class="nav-buttons">
       <button id="prevPage">Previous</button>
       <button id="nextPage">Next</button>
     </div>
+
     <div id="combinations"></div>
 
     <script>
@@ -103,35 +125,23 @@
         { name: "Rose", hex: "#F1948A" },
       ];
 
-      let page = 0;
-      const pageSize = 5;
+      let current = 0;
 
-      function renderColorPage() {
-        const listEl = document.getElementById("colorList");
-        listEl.innerHTML = "";
-        const slice = colors.slice(page * pageSize, (page + 1) * pageSize);
-        slice.forEach((c) => {
-          const li = document.createElement("div");
-          li.className = "color-option";
-          li.setAttribute("tabindex", "0");
-          li.innerHTML = `<div class="swatch" style="background:${c.hex}"></div>${c.name}`;
-          li.addEventListener("click", () => generateCombos(c.hex));
-          listEl.appendChild(li);
-        });
+      function updateColor() {
+        const c = colors[current];
+        document.getElementById("swatch").style.background = c.hex;
+        document.getElementById("colorName").textContent = c.name;
+        generateCombos(c.hex);
       }
 
       document.getElementById("prevPage").addEventListener("click", () => {
-        if (page > 0) {
-          page--;
-          renderColorPage();
-        }
+        if (current > 0) current--;
+        updateColor();
       });
 
       document.getElementById("nextPage").addEventListener("click", () => {
-        if ((page + 1) * pageSize < colors.length) {
-          page++;
-          renderColorPage();
-        }
+        if (current < colors.length - 1) current++;
+        updateColor();
       });
 
       function hexToHSL(hex) {
@@ -208,7 +218,7 @@
         document.getElementById("combinations").innerHTML = html;
       }
 
-      renderColorPage();
+      updateColor(); // initial render
     </script>
   </body>
 </html>
